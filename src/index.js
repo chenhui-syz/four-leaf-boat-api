@@ -31,6 +31,4 @@ if (!isDevMode) {
 app.use(middleware)
 app.use(router())
 
-app.listen(3000, () => {
-  console.log('koa is running on 3000')
-})
+app.listen(3000)
