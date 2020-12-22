@@ -1,5 +1,4 @@
 import User from './test'
-import { deleteModel } from 'mongoose'
 
 // 增
 const user = {
@@ -34,5 +33,4 @@ const deleteMethods = async () => {
   console.log(result)
 }
 
-updateMethods()
-// 单独运行此文件的指令：npx babel-node src/model/demo.js
+deleteMethods()
