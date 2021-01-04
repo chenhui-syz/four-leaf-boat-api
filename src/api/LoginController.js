@@ -3,13 +3,17 @@ import bcrypt from 'bcrypt'
 import moment from 'moment'
 import jsonwebtoken from 'jsonwebtoken'
 import config from '@/config'
-import { checkCode } from '@/common/Utils'
+import {
+  checkCode
+} from '@/common/Utils'
 import User from '@/model/User'
 
 class LoginController {
-  constructor() { }
+  constructor() {}
   async forget(ctx) {
-    const { body } = ctx.request
+    const {
+      body
+    } = ctx.request
     console.log(body)
     try {
       // body.username -> database -> email
@@ -34,7 +38,9 @@ class LoginController {
   async login(ctx) {
     // 接收用户的数据
     // 返回token
-    const { body } = ctx.request
+    const {
+      body
+    } = ctx.request
     let sid = body.sid
     let code = body.code
     // 验证图片验证码的时效性、正确性
@@ -42,7 +48,9 @@ class LoginController {
     if (result) {
       // 验证用户账号密码是否正确
       let checkUserPasswd = false
-      let user = await User.findOne({ username: body.username })
+      let user = await User.findOne({
+        username: body.username
+      })
       if (await bcrypt.compare(body.password, user.password)) {
         checkUserPasswd = true
       }
@@ -50,11 +58,19 @@ class LoginController {
       if (checkUserPasswd) {
         // 验证通过，返回Token数据
         console.log('Hello login')
-        let token = jsonwebtoken.sign({ _id: 'brian' }, config.JWT_SECRET, {
+        const userObj = user.toJSON()
+        const arr = ['password', 'username', 'roles']
+        arr.map((item) => {
+          delete userObj[item]
+        })
+        const token = jsonwebtoken.sign({
+          _id: 'brian'
+        }, config.JWT_SECRET, {
           expiresIn: '1d'
         })
         ctx.body = {
           code: 200,
+          data: userObj,
           token: token
         }
       } else {
@@ -75,7 +91,9 @@ class LoginController {
 
   async reg(ctx) {
     // 接收客户端的数据
-    const { body } = ctx.request
+    const {
+      body
+    } = ctx.request
     // 校验验证码的内容（时效性、有效性）
     let sid = body.sid
     let code = body.code
@@ -85,12 +103,16 @@ class LoginController {
     let check = true
     if (result) {
       // 查库，看username是否被注册
-      let user1 = await User.findOne({ username: body.username })
+      let user1 = await User.findOne({
+        username: body.username
+      })
       if (user1 !== null && typeof user1.username !== 'undefined') {
         msg.username = ['此邮箱已经注册，可以通过邮箱找回密码']
         check = false
       }
-      let user2 = await User.findOne({ name: body.name })
+      let user2 = await User.findOne({
+        name: body.name
+      })
       // 查库，看name是否被注册
       if (user2 !== null && typeof user2.name !== 'undefined') {
         msg.name = ['此昵称已经被注册，请修改']
