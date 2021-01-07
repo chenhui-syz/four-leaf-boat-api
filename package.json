@@ -13,7 +13,7 @@
     "dev": "npm-run-all -p watch debug"
   },
   "keywords": [],
-  "author": "brian@toimc.com",
+  "author": "chenhui",
   "license": "ISC",
   "dependencies": {
     "@koa/cors": "^3.0.0",
