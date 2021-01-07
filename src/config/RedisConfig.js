@@ -27,7 +27,6 @@ const options = {
   }
 }
 
-// const client = redis.createClient(options)
 const client = promisifyAll(redis.createClient(options))
 
 client.on('error', (err) => {
@@ -53,18 +52,11 @@ const setValue = (key, value, time) => {
   }
 }
 
-// const {promisify} = require('util');
-// const getAsync = promisify(client.get).bind(client);
-
 const getValue = (key) => {
   return client.getAsync(key)
 }
 
 const getHValue = (key) => {
-  // v8 Promisify method use util, must node > 8
-  // return promisify(client.hgetall).bind(client)(key)
-
-  // bluebird async
   return client.hgetallAsync(key)
 }
 
@@ -85,3 +77,21 @@ export {
   getHValue,
   delValue
 }
+
+
+// 测试操作
+// import { getValue, setValue, getHValue, delValue } from './RedisConfig'
+
+// setValue('imooc', 'imooc message from redis client')
+
+// getValue('imooc').then((res) => {
+//   console.log('getValue:' + res)
+// })
+
+// delValue('imooc')
+
+// setValue('imoocobj', {name: 'brian', age: 30, email: 'brian@toimc.com'})
+
+// getHValue('imoocobj').then((res) => {
+//   console.log('getHValue:' +JSON.stringify(res, null, 2))
+// })
