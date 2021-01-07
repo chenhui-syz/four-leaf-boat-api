@@ -4,6 +4,8 @@ import {
 } from '../common/Utils.js'
 import User from '../model/User'
 import moment from 'dayjs'
+import send from '@/config/MailConfig'
+// import uuid from 'uuid/v4'
 
 class UserController {
     // 用户签到接口
@@ -27,6 +29,7 @@ class UserController {
                     code: 500,
                     favs: user.favs,
                     count: user.count,
+                    lastSign: record.created,
                     msg: '用户已经签到'
                 }
                 // 一定要有return
@@ -119,8 +122,65 @@ class UserController {
         ctx.body = {
             code: 200,
             msg: '请求成功',
-            ...result
+            ...result,
+            lastSign: newRecord.created
         }
+    }
+
+    // 更新用户基本信息接口
+    async updateUserInfo(ctx) {
+        const {
+            body
+        } = ctx.request
+        const obj = await getJWTPayload(ctx.header.authorization)
+        // 判断用户是否修改了邮箱
+        const user = await User.findOne({
+            _id: obj._id
+        })
+        if (body.username && body.username !== user.username) {
+            // 用户修改了邮箱，需要发送邮件
+            const result = await send({
+                // 根据type去判断邮件的具体内容
+                type: 'email',
+                // key: uuid(),
+                // 邀请码，可选
+                code: '1234',
+                // 过期时间，可选
+                expire: moment()
+                    .add(30, 'minutes')
+                    .format('YYYY-MM-DD HH:mm:ss'),
+                // 发送邮箱，必选
+                email: body.username,
+                // 用户的昵称，可选
+                user: 'Username',
+            })
+            ctx.body = {
+                code: 500,
+                data: result,
+                msg: '发送验证邮件成功，请点击链接确认修改邮件帐号'
+            }
+        } else {
+            // 过滤掉下面的几处敏感信息，不允许用户随意修改
+            const arr = ['username', 'mobile', 'password']
+            arr.map((item) => {
+                delete body[item]
+            })
+            const result = await User.updateOne({
+                _id: obj._id
+            }, body)
+            if (result.n === 1 && result.ok === 1) {
+                ctx.body = {
+                    code: 200,
+                    msg: '更新成功'
+                }
+            } else {
+                ctx.body = {
+                    code: 500,
+                    msg: '更新失败'
+                }
+            }
+        }
+
     }
 }
 

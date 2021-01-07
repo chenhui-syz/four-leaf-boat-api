@@ -15,6 +15,7 @@ const UserSchema = new Schema({
 })
 
 UserSchema.statics = {
+  // 这个地方的返回数据屏蔽了password，username，mobile
   findByID: function (id) {
     return this.findOne({
       _id: id

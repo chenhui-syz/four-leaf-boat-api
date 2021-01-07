@@ -19,12 +19,16 @@ class LoginController {
     try {
       // body.username -> database -> email
       let result = await send({
+        // 邀请码，可选
         code: '1234',
+        // 过期时间，可选
         expire: moment()
           .add(30, 'minutes')
           .format('YYYY-MM-DD HH:mm:ss'),
+        // 发送邮箱，必选
         email: body.username,
-        user: 'Brian',
+        // 用户的昵称，可选
+        user: 'Username',
       })
       ctx.body = {
         code: 200,
@@ -60,7 +64,8 @@ class LoginController {
         // 验证通过，返回Token数据
         console.log('Hello login')
         const userObj = user.toJSON()
-        const arr = ['password', 'username', 'roles']
+        // 返回给前端用户信息的时候，先过滤掉下面这几项
+        const arr = ['password', 'username', 'mobile']
         arr.map((item) => {
           delete userObj[item]
         })
@@ -77,6 +82,7 @@ class LoginController {
           } else {
             userObj.isSign = false
           }
+          userObj.lastSign = signRecord.created
         } else {
           // 用户无签到记录
           userObj.isSign = false
