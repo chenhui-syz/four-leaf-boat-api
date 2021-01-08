@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import config from '@/config'
 
 async function send(sendInfo) {
   let transporter = nodemailer.createTransport({
@@ -18,9 +19,11 @@ async function send(sendInfo) {
   //   user: 'Brian',
   // }
   // 用户跳转链接
-  let url = 'localhost:3000'
+  const baseUrl = config.baseUrl
+  const route = sendInfo.type === 'email' ? '/email' : '/reset'
+  let url = `${baseUrl}/#${route}?key=${sendInfo.key}`
 
-  // send mail with defined transport object
+  // send mail with defined transport object 
   let info = await transporter.sendMail({
     from: '"认证邮件" <imoocbrian@qq.com>', // sender address
     to: sendInfo.email, // list of receivers

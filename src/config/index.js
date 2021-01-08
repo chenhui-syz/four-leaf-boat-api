@@ -6,8 +6,11 @@ const REDIS = {
 }
 const JWT_SECRET = 'a&*38QthAKuiRwISGLotgq^3%^$zvA3A6Hfr8MF$jM*HY4*dWcwAW&9NGp7*b53!'
 
+const baseUrl = process.env.NODE_ENV === 'produciton' ? 'siyezhou.com' : 'localhost:3000'
+
 export default {
   DB_URL,
   REDIS,
-  JWT_SECRET
+  JWT_SECRET,
+  baseUrl
 }

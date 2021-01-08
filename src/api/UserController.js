@@ -5,7 +5,10 @@ import {
 import User from '../model/User'
 import moment from 'dayjs'
 import send from '@/config/MailConfig'
-// import uuid from 'uuid/v4'
+import uuid from 'uuid/dist/v4'
+import jwt from 'jsonwebtoken'
+import {setValue} from '@/config/RedisConfig'
+import config from '@/config'
 
 class UserController {
     // 用户签到接口
@@ -138,13 +141,19 @@ class UserController {
             _id: obj._id
         })
         if (body.username && body.username !== user.username) {
-            // 用户修改了邮箱，需要发送邮件
+            // 用户修改了邮箱，需要发送邮件 
+            const key = uuid()
+            setValue(key, jwt.sign({
+                _id: obj._id
+            }, config.JWT_SECRET, {
+                expiresIn: '30m'
+            }))
             const result = await send({
                 // 根据type去判断邮件的具体内容
                 type: 'email',
-                // key: uuid(),
+                key: key,
                 // 邀请码，可选
-                code: '1234',
+                code: '',
                 // 过期时间，可选
                 expire: moment()
                     .add(30, 'minutes')
