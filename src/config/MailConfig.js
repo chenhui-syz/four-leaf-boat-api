@@ -3,29 +3,24 @@ import config from '@/config'
 
 async function send(sendInfo) {
   let transporter = nodemailer.createTransport({
-    host: '893352008@qq.com',
+    host: 'smtp.qq.com',// 这个是qq邮箱的主机地址，只要是用的qq邮箱，这个地方就是固定的，不能随意修改
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
       user: '893352008@qq.com', // generated ethereal user
-      pass: 'rbkcbxwrurygjfca', // generated ethereal password
+      pass: 'obbzxuzvnnnjbdjh', // generated ethereal password
     },
   })
 
-  // let sendInfo = {
-  //   code: '1234',
-  //   expire: '2019-10-01',
-  //   email: 'imoocbrian@qq.com',
-  //   user: 'Brian',
-  // }
   // 用户跳转链接
   const baseUrl = config.baseUrl
   const route = sendInfo.type === 'email' ? '/email' : '/reset'
   let url = `${baseUrl}/#${route}?key=${sendInfo.key}`
-
+  console.log('hhhjjjjjjj')
+  console.log(url)
   // send mail with defined transport object 
   let info = await transporter.sendMail({
-    from: '"认证邮件" <imoocbrian@qq.com>', // sender address
+    from: '"认证邮件" <893352008@qq.com>', // sender address
     to: sendInfo.email, // list of receivers
     subject: '这里填写的邮件主题',
     text: '当html有内容的时候，text的内容不会显示',

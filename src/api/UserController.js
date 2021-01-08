@@ -7,7 +7,10 @@ import moment from 'dayjs'
 import send from '@/config/MailConfig'
 import uuid from 'uuid/dist/v4'
 import jwt from 'jsonwebtoken'
-import {setValue} from '@/config/RedisConfig'
+import {
+    setValue,
+    getValue
+} from '@/config/RedisConfig'
 import config from '@/config'
 
 class UserController {
@@ -141,13 +144,15 @@ class UserController {
             _id: obj._id
         })
         if (body.username && body.username !== user.username) {
-            // 用户修改了邮箱，需要发送邮件 
+            // 用户修改了邮箱
+            // 需要发送邮件 
             const key = uuid()
             setValue(key, jwt.sign({
                 _id: obj._id
             }, config.JWT_SECRET, {
                 expiresIn: '30m'
             }))
+            console.log('xxxyyzzz')
             const result = await send({
                 // 根据type去判断邮件的具体内容
                 type: 'email',
@@ -159,9 +164,9 @@ class UserController {
                     .add(30, 'minutes')
                     .format('YYYY-MM-DD HH:mm:ss'),
                 // 发送邮箱，必选
-                email: body.username,
+                email: user.username,
                 // 用户的昵称，可选
-                user: 'Username',
+                user: 'testUsername',
             })
             ctx.body = {
                 code: 500,
@@ -187,6 +192,25 @@ class UserController {
                     code: 500,
                     msg: '更新失败'
                 }
+            }
+        }
+
+    }
+
+    // 更新用户名
+    async updateUsername(ctx) {
+        const body = ctx.body
+        if (body.key) {
+            const token = getValue(key)
+            const obj = getJWTPayload('Bearer' + token)
+            await User.updateOne({
+                _id: obj._id
+            }, {
+                username: body.username
+            })
+            ctx.body = {
+                code: 200,
+                msg: '更新用户名成功'
             }
         }
 
