@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer'
 import config from '@/config'
+import qs from 'qs'
 
 async function send(sendInfo) {
   let transporter = nodemailer.createTransport({
-    host: 'smtp.qq.com',// 这个是qq邮箱的主机地址，只要是用的qq邮箱，这个地方就是固定的，不能随意修改
+    host: 'smtp.qq.com', // 这个是qq邮箱的主机地址，只要是用的qq邮箱，这个地方就是固定的，不能随意修改
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
@@ -15,7 +16,7 @@ async function send(sendInfo) {
   // 用户跳转链接
   const baseUrl = config.baseUrl
   const route = sendInfo.type === 'email' ? '/email' : '/reset'
-  let url = `${baseUrl}/#${route}?key=${sendInfo.key}`
+  let url = `${baseUrl}/#${route}?` + qs.stringify(snedInfo.data)
   console.log('hhhjjjjjjj')
   console.log(url)
   // send mail with defined transport object 
