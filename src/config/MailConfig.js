@@ -15,8 +15,8 @@ async function send(sendInfo) {
 
   // 用户跳转链接
   const baseUrl = config.baseUrl
-  const route = sendInfo.type === 'email' ? '/email' : '/reset'
-  let url = `${baseUrl}/#${route}?` + qs.stringify(snedInfo.data)
+  const route = sendInfo.type === 'email' ? '/confirm' : '/reset'
+  let url = `${baseUrl}/#${route}?` + qs.stringify(sendInfo.data)
   console.log('hhhjjjjjjj')
   console.log(url)
   // send mail with defined transport object 

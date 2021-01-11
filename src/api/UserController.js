@@ -164,7 +164,6 @@ class UserController {
             }, config.JWT_SECRET, {
                 expiresIn: '30m'
             }))
-            console.log('xxxyyzzz')
             const result = await send({
                 // 根据type去判断邮件的具体内容
                 type: 'email',
@@ -214,7 +213,7 @@ class UserController {
         const body = ctx.query
         if (body.key) {
             const token = await getValue(body.key)
-            const obj = getJWTPayload('Bearer' + token)
+            const obj = getJWTPayload('Bearer ' + token)
             await User.updateOne({
                 _id: obj._id
             }, {
