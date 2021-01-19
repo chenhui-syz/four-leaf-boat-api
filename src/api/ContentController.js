@@ -5,7 +5,12 @@ import uuid from 'uuid/dist/v4'
 import mement from 'dayjs'
 import config from '@/config'
 import {
-    dirExists
+    dirExists,
+    getJWTPayload
+} from '@/common/Utils'
+
+import {
+    checkCode
 } from '@/common/Utils'
 
 class ContentController {
@@ -128,6 +133,21 @@ class ContentController {
             data: filePath
         }
 
+    }
+
+    // 发表新帖
+    async addPost(ctx) {
+        const {
+            body
+        } = ctx.request
+        let sid = body.sid
+        let code = body.code
+        // 验证图片验证码的时效性、正确性
+        let result = await checkCode(sid, code)
+        if (result) {
+            const obj = await getJWTPayload(ctx.header.authorization)
+            
+        }
     }
 }
 
