@@ -50,10 +50,10 @@ const PostSchema = new Schema({
     },
     tags: {
         type: Array,
-        default: [{
-            name: '',
-            calss: ''
-        }]
+        // default: [{
+        //     name: '',
+        //     calss: ''
+        // }]
     },
 
 
