@@ -226,6 +226,25 @@ class UserController {
         }
 
     }
+
+    // 获取历史消息
+    // 记录评论之后，给作者发送未读消息
+    async getMsg(ctx) {
+        const params = ctx.query
+        const page = params.page ? params.page : 0
+        const limit = params.limit ? parseInt(params.limit) : 0
+        // 方法一：嵌套查询=> aggregate
+        const obj = await getJWTPayload(ctx.header.authorization)
+        // Comments是封装的评论model
+        // const result = await Comments.getMsgList(obj._id, page, limit)
+
+        // 方法二：通过冗余换时间
+
+        ctx.body = {
+            code: 200,
+            data: result
+        }
+    }
 }
 
 export default new UserController()
