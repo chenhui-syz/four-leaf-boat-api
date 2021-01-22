@@ -135,6 +135,7 @@ class UserController {
 
     // 更新用户基本信息接口
     async updateUserInfo(ctx) {
+        global.ws.send('更新了用户的基本信息')
         const {
             body
         } = ctx.request
