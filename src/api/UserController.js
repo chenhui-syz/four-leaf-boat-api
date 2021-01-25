@@ -135,7 +135,12 @@ class UserController {
 
     // 更新用户基本信息接口
     async updateUserInfo(ctx) {
-        global.ws.send('更新了用户的基本信息')
+        console.log('xtttttttttttttttttttttttttttttttttt')
+        console.log(global.ws)
+        global.ws.send(JSON.stringify({
+            event:'message',
+            message:'您有一条新的评论'
+        }))
         const {
             body
         } = ctx.request

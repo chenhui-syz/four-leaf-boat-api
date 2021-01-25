@@ -95,11 +95,11 @@ class WebSocketServer {
     }
     // 点对点的消息发送
     send(msg) {
-    // send(uid, msg) {
+        // send(uid, msg) {
         this.wss.clients.forEach((client) => {
-            if (client.readyState === WebSocket) {
-            // if (client.readyState === WebSocket.OPEN && client._id === uid) {
-                this.send(msg)
+            if (client.readyState === WebSocket.OPEN) {
+                // if (client.readyState === WebSocket.OPEN && client._id === uid) {
+                client.send(msg)
             }
         })
     }
@@ -108,7 +108,7 @@ class WebSocketServer {
     broadcast(msg) {
         this.wss.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
-                this.send(msg)
+                client.send(msg)
             }
         })
     }
