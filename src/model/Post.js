@@ -59,6 +59,7 @@ const PostSchema = new Schema({
 
 })
 
+// 拦截save
 PostSchema.pre('save', function (next) {
     this.created = moment().format('YYYY-MM-DD HH:mm:ss')
     next()

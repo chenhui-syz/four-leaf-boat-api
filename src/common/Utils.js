@@ -37,12 +37,14 @@ const getStats = (path) => {
     //   }
     // })
     // 简写：
+    // stat可以去检测文件夹的状态，包括该地址是不是文件夹  或者是不是文件
     fs.stat(path, (err, stats) => err ? resolve(false) : resolve(stats))
   })
 }
 
 const mkdir = (dir) => {
   return new Promise((resolve) => {
+    // mkdir是创建文件夹的方法
     fs.mkdir(dir, err => err ? resolve(false) : resolve(true))
   })
 }

@@ -2,7 +2,7 @@
 // import Links from '../model/Links'
 import fs from 'fs'
 import uuid from 'uuid/dist/v4'
-import mement from 'dayjs'
+import moment from 'dayjs'
 import config from '@/config'
 import {
     dirExists,
@@ -88,7 +88,7 @@ class ContentController {
         console.log('config.uploadPath', config.uploadPath)
         // 图片的名称，图片的格式，存储的位置，最终返回前台可以读取的路径
         const ext = file.name.split(',').pop()
-        const dir = `${config.uploadPath}/avatar/${mement().format('YYYYMMDD')}`
+        const dir = `${config.uploadPath}/avatar/${moment().format('YYYYMMDD')}`
         console.log('完整的路径', dir)
         console.log('文件名称', ext)
         // 判断路径是否存在，不存在则创建
@@ -106,7 +106,7 @@ class ContentController {
         const upStream = fs.createWriteStream(destPath)
         // 因为public目录里面的文件都直接做了静态资源分享
         // 所以把文件的public后的路径+文件名返给前台
-        const filePath = `/${mement().format('YYYYMMDD')}/${picname}.${ext}`
+        const filePath = `/${moment().format('YYYYMMDD')}/${picname}.${ext}`
         // 写入文件===>方法1,简单易用
         // reader.pipe(upStream)
         // 写入文件===>方法2,应用于大文件，可以监听异常以及文件的上传进度
@@ -129,13 +129,11 @@ class ContentController {
         reader.on('end', () => {
             upStream.end()
         })
-
         ctx.body = {
             code: 200,
             msg: '图片上传成功',
             data: filePath
         }
-
     }
 
     // 发表新帖
@@ -149,8 +147,6 @@ class ContentController {
         let result = await checkCode(sid, code)
         if (result) {
             const obj = await getJWTPayload(ctx.header.authorization)
-            console.log('xxxx')
-            console.log(obj)
             // 判断用户的积分数是否> fav，否则提示用户积分不足，发帖失败
             // 用户积分足够的时候，新建Post，减除用户对应的积分
             const user = await User.findByID({

@@ -17,8 +17,6 @@ async function send(sendInfo) {
   const baseUrl = config.baseUrl
   const route = sendInfo.type === 'email' ? '/confirm' : '/reset'
   let url = `${baseUrl}/#${route}?` + qs.stringify(sendInfo.data)
-  console.log('hhhjjjjjjj')
-  console.log(url)
   // send mail with defined transport object 
   let info = await transporter.sendMail({
     from: '"认证邮件" <893352008@qq.com>', // sender address
