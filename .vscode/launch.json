@@ -13,12 +13,15 @@
       "restart": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "runtimeArgs": ["run-script","dev"],
+      "runtimeArgs": ["run-script", "dev"],
       "port": 9229
     },
     {
-      "type":"node",
-      "request": "launch"
+      "type": "node",
+      "request": "launch",
+      "name": "nodemon",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+      "program": "${workspaceFolder}/src/index.js"
     }
   ]
 }
