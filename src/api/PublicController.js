@@ -6,6 +6,7 @@ import {
 
 class PublicController {
   constructor() {}
+  // 获取验证码
   async getCaptcha(ctx) {
     const body = ctx.request.query
     const newCaptca = svgCaptcha.create({

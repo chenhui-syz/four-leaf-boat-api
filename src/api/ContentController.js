@@ -51,37 +51,6 @@ class ContentController {
         }
     }
 
-    // 查询友情链接
-    async getLinks(ctx) {
-        const result = await Links.find({
-            type: 'links'
-        })
-        ctx.body = {
-            code: 200,
-            data: result
-        }
-    }
-
-    // 查询温馨提醒
-    async getTips(ctx) {
-        const result = await Links.find({
-            type: 'tips'
-        })
-        ctx.body = {
-            code: 200,
-            data: result
-        }
-    }
-
-    // 本周热议
-    async getTopWeek(ctx) {
-        const result = await Post.getTopWeek()
-        ctx.body = {
-            code: 200,
-            data: result
-        }
-    }
-
     // 上传图片
     async uploadImg(ctx) {
         const file = ctx.request.files.file

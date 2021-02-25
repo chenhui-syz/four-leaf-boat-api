@@ -11,6 +11,7 @@ import SignRecord from '../model/SignRecord'
 
 class LoginController {
   constructor() {}
+  // 忘记密码
   async forget(ctx) {
     const {
       body
@@ -40,6 +41,7 @@ class LoginController {
     }
   }
 
+  // 登录
   async login(ctx) {
     // 接收用户的数据
     // 返回token
@@ -108,6 +110,7 @@ class LoginController {
     }
   }
 
+  // 注册
   async reg(ctx) {
     // 接收客户端的数据
     const {
