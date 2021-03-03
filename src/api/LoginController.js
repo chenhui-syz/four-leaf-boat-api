@@ -58,9 +58,14 @@ class LoginController {
       let user = await User.findOne({
         username: body.username
       })
+      console.log('------------')
+      console.log(body)
+      console.log('+++++++++++++')
+      console.log(user)
       if (await bcrypt.compare(body.password, user.password)) {
         checkUserPasswd = true
       }
+      console.log(checkUserPasswd)
       // mongoDB查库
       if (checkUserPasswd) {
         // 验证通过，返回Token数据
